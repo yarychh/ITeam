@@ -1,0 +1,100 @@
+<div class="container">
+
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()" (keydown.enter)="$event.preventDefault()">
+    <h1 class="form__heading">Please fill the form below:</h1>
+
+    <div class="form-control">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Name"
+          id="name"
+          class="form__input"
+          formControlName="firstName"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Surname"
+          id="surname"
+          class="form__input"
+          formControlName="lastName"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field>
+        <input
+          id="date"
+          placeholder="Birthday"
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateOfBirth"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-control">  
+        <mat-form-field appearance="fill">
+            <mat-label>Framework you use</mat-label>
+            <mat-select formControlName="framework">
+                <mat-option *ngFor="let framework of frameworks" [value]="framework.name">
+                {{framework.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-control">  
+        <mat-form-field appearance="fill">
+            <mat-label>Version of framework</mat-label>
+            <mat-select formControlName="frameworkVersion">
+                <mat-option *ngFor="let version of versions" [value]="version">
+                {{ version }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-control">
+        <mat-form-field>
+          <input
+            matInput
+            type="email"
+            placeholder="email"
+            id="email"
+            class="form__input"
+            formControlName="email"
+          />
+        </mat-form-field>
+      </div>
+
+      <div formArrayName="hobby">
+        <div *ngFor="let hobbyForm of hobby.controls">
+            <div [formGroup]="hobbyForm | hobbyPipe">
+                <mat-form-field>
+                    <input formControlName="name" type="text" matInput placeholder="hobby">
+                </mat-form-field>
+                <mat-form-field>
+                    <input type="text" formControlName="duration" matInput placeholder="duration">
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+      <small *ngIf="this.hobby.length < 1">At least one hobby needed</small>
+
+      <button mat-button (click)="addHobby()">Add</button>
+
+      <button mat-stroked-button [disabled]='disabled' type="submit">Submit</button>
+      
+  </form>
+</div>
